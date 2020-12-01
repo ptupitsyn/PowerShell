@@ -77,9 +77,11 @@ namespace System.Management.Automation
         {
             s_psVersionTable = new PSVersionHashTable(StringComparer.OrdinalIgnoreCase);
 
-            string assemblyPath = typeof(PSVersionInfo).Assembly.Location;
-            string productVersion = FileVersionInfo.GetVersionInfo(assemblyPath).ProductVersion;
-
+            string productVersion = typeof(PSVersionInfo).Assembly
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                .InformationalVersion
+                .Trim();
+                
             // Get 'GitCommitId' and 'PSVersion' from the 'productVersion' assembly attribute.
             //
             // The strings can be one of the following format examples:
